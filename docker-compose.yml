@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  go:
+    image: golang:latest
+    volumes:
+      - .:/lets-go
+      - ./env/go:/go
+    working_dir: /lets-go
+    environment:
+      GOPATH: /lets-go/go
+
