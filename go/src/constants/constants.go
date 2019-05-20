@@ -42,5 +42,36 @@ func main() {
 	fmt.Printf("type %T and value %v\n", name, name)
 	// HEY, I CAN SEE THE TYPE RIGHT THERE, WHAT'S GOING ON?
 	// Ok, we can see the type, but this works a little bit different in Go. Every
-	// untyped constant has a default type associated with them.
+	// untyped constant has a default type associated with them. So, every
+	// constant that doesn't explicitly declares it's type is a untyped contanst.
+	// BUT, the constant can assume the type based on the value only if the code
+	// requires it.
+	// Weird, eh? As the example below:
+	const nomezito = "Jose de Los Vegetales"
+	fmt.Printf("El tipo %T e valor %v\n", nomezito, nomezito)
+	// When we write `const nomezito`, this constant is untyped; however, as we're
+	// assigning `"Jose de Los Vegetales"`, which is another constant but it's a
+	// string, our constant `nomezito` interprets the very same type to it's own
+	// type. Just because the value assignment, as a code operation, demands it.
+	// Honestly this sounds like a lie to me, it's like the assignment itself is
+	// the only responsible for the constant type, period.
+	// For me, this is weird AF.
+	// To make things clear, we can also create typed constants:
+	const typedSomething string = "Something"
+	fmt.Printf("type %T and value %v\n", typedSomething, typedSomething)
+	// As a proof that typed constants can only assign values from the same type,
+	// the line below raises a `cannot convert 100 (type untyped number) to type
+	// string` error.
+	//const eitaPreula string = 100
+	// And something kinda strange happens if we try the below:
+	var firstName = "Foo"
+	type myString string
+	var anotherName myString = "Bar"
+	// Until here, everything is 200 OK. But the line below has a surprise:
+	anotherName = firstName
+	// It raises the error `cannot use firstName (type string) as type myString in
+	// assignment`, which is telling us that type string is != of type myString,
+	// even if they both accepts strings! The type myString above is an alias for
+	// string.
 }
+
